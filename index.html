@@ -797,7 +797,7 @@
 <body>
 
 <nav>
-  <a class="nav-logo" onclick="showPage('home')" style="cursor:pointer">Everwell</a>
+  <a class="nav-logo" onclick="showPage('home')" style="cursor:pointer;text-decoration:none">Everwell</a>
   <ul class="nav-links">
     <li><a onclick="showPage('home')" style="cursor:pointer">Home</a></li>
     <li><a onclick="showPage('about')" style="cursor:pointer">About</a></li>
@@ -889,7 +889,7 @@
       <p>The foundation is our attempt at that. A structure for giving that is thoughtful rather than impulsive, sustained rather than occasional. We do not seek recognition. We seek impact — small, real, and lasting.</p>
       <p>The journal is the rest of it. The travels, the meals, the mornings that moved us, the books that changed how we thought about something. A life being lived alongside the work, not in spite of it.</p>
       <p class="handwritten" style="font-size:1rem;margin-top:2rem;color:#d4c49a">as ever,</p>
-      <p class="handwritten" style="font-size:1.5rem;margin-top:0.3rem;color:var(--earth)">&mdash; S &amp; A</p>
+      <p class="handwritten" style="font-size:1.3rem;margin-top:0.3rem;color:var(--earth)">the founders</p>
     </div>
     <div class="about-aside">
       <div class="aside-item">
@@ -924,7 +924,7 @@
 
 <!-- JOURNAL -->
 <section id="journal">
-  <div class="blog-hero">
+  <div class="blog-hero" style="position:relative">
     <p class="about-label">Journal</p>
     <h1 class="about-title" style="font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,5vw,4rem);font-weight:300;color:var(--ink);line-height:1.1;margin-bottom:1rem">Notes from the work<br><em style="color:var(--earth)">and the life.</em></h1>
     <div class="blog-tabs">
@@ -1013,7 +1013,21 @@
     document.getElementById(id).classList.add('active');
     window.scrollTo(0, 0);
     if (id === 'journal') renderJournalPosts(currentFilter);
+    // Update browser history so back button works
+    history.pushState({ page: id }, '', '#' + id);
   }
+
+  // Handle browser back button
+  window.addEventListener('popstate', function(e) {
+    const page = e.state ? e.state.page : 'home';
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(page).classList.add('active');
+    window.scrollTo(0, 0);
+    if (page === 'journal') renderJournalPosts(currentFilter);
+  });
+
+  // Set initial state
+  history.replaceState({ page: 'home' }, '', '#home');
 
   function parseFrontmatter(text) {
     const match = text.match(/^---\n([\s\S]*?)\n---/);
@@ -1123,9 +1137,10 @@
       if (para.startsWith('<h') || para.startsWith('<blockquote') || para.startsWith('<img')) return para;
       return `<p>${para.replace(/\n/g, ' ')}</p>`;
     }).join('');
+    const authorLine = p.author ? `<span style="font-family:'MeghanJr',cursive;font-size:1.3rem;color:var(--earth);margin-top:0.2rem">&mdash; ${p.author}</span>` : '';
     body += `<div class="post-signoff">
       <span style="font-family:'MeghanJr',cursive;font-size:1rem;color:#d4c49a">as ever,</span>
-      <span style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--earth)">— A & S</span>
+      ${authorLine}
     </div>`;
     document.getElementById('post-body').innerHTML = body;
     document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
