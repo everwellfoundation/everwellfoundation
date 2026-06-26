@@ -2,6 +2,7 @@
 title: Eight girls walked into school. We helped put them there.
 date: 2026-06-01T17:23:00.000-04:00
 category: foundation
+author: S
 excerpt: It started with a six-year-old sitting on the kitchen floor of my
   family home in India. She should have been at school. She wasn't. And I
   couldn't stop thinking about why.
