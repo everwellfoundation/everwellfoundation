@@ -15,13 +15,26 @@ collections:
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Date", name: "date", widget: "datetime"}
       - {label: "Category", name: "category", widget: "hidden", default: "foundation"}
-      - label: "Author"
-        name: "author"
+      - label: "Greeting"
+        name: "greeting"
         widget: "select"
+        hint: "Appears after 'as ever,' in the sign off"
         options:
+          - {label: "you're beautiful", value: "you're beautiful"}
+          - {label: "and with love", value: "and with love"}
+          - {label: "Yours", value: "Yours"}
+          - {label: "All the best", value: "All the best"}
+          - {label: "Cheers", value: "Cheers"}
+          - {label: "Always", value: "Always"}
+          - {label: "Blank (as ever only)", value: "blank"}
+      - label: "Initial"
+        name: "initial"
+        widget: "select"
+        hint: "Who is writing this post?"
+        options:
+          - {label: "Aj", value: "Aj"}
+          - {label: "Ad", value: "Ad"}
           - {label: "S", value: "S"}
-          - {label: "A (first)", value: "A1"}
-          - {label: "A (second)", value: "A2"}
       - {label: "Featured Image", name: "featured_image", widget: "image", required: false, hint: "Main cover image shown at the top of the post"}
       - {label: "Excerpt", name: "excerpt", widget: "text"}
       - {label: "Body", name: "body", widget: "markdown"}
@@ -35,13 +48,26 @@ collections:
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Date", name: "date", widget: "datetime"}
       - {label: "Category", name: "category", widget: "hidden", default: "travels"}
-      - label: "Author"
-        name: "author"
+      - label: "Greeting"
+        name: "greeting"
         widget: "select"
+        hint: "Appears after 'as ever,' in the sign off"
         options:
+          - {label: "you're beautiful", value: "you're beautiful"}
+          - {label: "and with love", value: "and with love"}
+          - {label: "Yours", value: "Yours"}
+          - {label: "All the best", value: "All the best"}
+          - {label: "Cheers", value: "Cheers"}
+          - {label: "Always", value: "Always"}
+          - {label: "Blank (as ever only)", value: "blank"}
+      - label: "Initial"
+        name: "initial"
+        widget: "select"
+        hint: "Who is writing this post?"
+        options:
+          - {label: "Aj", value: "Aj"}
+          - {label: "Ad", value: "Ad"}
           - {label: "S", value: "S"}
-          - {label: "A (first)", value: "A1"}
-          - {label: "A (second)", value: "A2"}
       - {label: "Featured Image", name: "featured_image", widget: "image", required: false, hint: "Main cover image shown at the top of the post"}
       - {label: "Excerpt", name: "excerpt", widget: "text"}
       - {label: "Body", name: "body", widget: "markdown"}
