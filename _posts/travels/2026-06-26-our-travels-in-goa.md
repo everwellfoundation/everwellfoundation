@@ -18,3 +18,5 @@ The colours were extraordinary. The aspens had turned — gold and amber and a d
 One afternoon we found ourselves at Alta Lake — still, glassy, the mountains reflected perfectly in the water. We sat there for a while without saying much. Some places make conversation feel unnecessary.
 
 What we took home from Whistler wasn't a list of things we'd done. It was the particular feeling of a place at rest — unhurried, unperformed, just itself. That is rarer than it sounds, and worth travelling for.
+
+![](/images/uploads/w2.avif)
