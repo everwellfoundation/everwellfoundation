@@ -743,24 +743,9 @@
       </div>
       <a class="see-all" onclick="showPage('journal')">See all →</a>
     </div>
-    <div class="posts-grid">
-      <div class="post-card featured" onclick="showPage('journal')">
-        <p class="post-tag">Life & Travels</p>
-        <h3 class="post-title">Three weeks in southern India — what the temples taught us about giving</h3>
-        <p class="post-excerpt">We arrived in Chennai in the middle of a heat wave. The kind that sits on your chest. But inside the corridors of Brihadeeswarar, the stone held the cool of centuries, and something shifted in how we thought about permanence.</p>
-        <p class="post-date">June 2026</p>
-      </div>
-      <div class="post-card" onclick="showPage('journal')">
-        <p class="post-tag">Foundation Work</p>
-        <h3 class="post-title">Our first grant, and everything we didn't expect</h3>
-        <p class="post-excerpt">Giving money away is harder than raising it. Here is what we learned in year one.</p>
-        <p class="post-date">May 2026</p>
-      </div>
-      <div class="post-card" onclick="showPage('journal')">
-        <p class="post-tag">Life & Travels</p>
-        <h3 class="post-title">On slow mornings in the Cotswolds</h3>
-        <p class="post-excerpt">A long weekend, a log fire, and the realisation that rest is also a form of work.</p>
-        <p class="post-date">April 2026</p>
+    <div class="posts-grid" id="home-posts-grid">
+      <div class="post-card featured" style="display:flex;align-items:center;justify-content:center">
+        <p class="post-excerpt" style="text-align:center;color:var(--warm-mid)">Loading posts...</p>
       </div>
     </div>
   </div>
@@ -835,41 +820,8 @@
 
   <div class="blog-grid">
     <div class="posts-list" id="posts-list">
-      <div class="post-list-item" data-cat="travels">
-        <p class="post-tag">Life & Travels</p>
-        <h3 class="post-title">Three weeks in southern India — what the temples taught us about giving</h3>
-        <p class="post-excerpt">We arrived in Chennai in the middle of a heat wave. But inside the corridors of Brihadeeswarar, the stone held the cool of centuries.</p>
-        <p class="post-date">June 2026</p>
-      </div>
-      <div class="post-list-item" data-cat="foundation">
-        <p class="post-tag">Foundation Work</p>
-        <h3 class="post-title">Our first grant, and everything we didn't expect</h3>
-        <p class="post-excerpt">Giving money away is harder than raising it. Here is what we learned in year one of Everwell.</p>
-        <p class="post-date">May 2026</p>
-      </div>
-      <div class="post-list-item" data-cat="travels">
-        <p class="post-tag">Life & Travels</p>
-        <h3 class="post-title">On slow mornings in the Cotswolds</h3>
-        <p class="post-excerpt">A long weekend, a log fire, and the realisation that rest is also a form of work.</p>
-        <p class="post-date">April 2026</p>
-      </div>
-      <div class="post-list-item" data-cat="foundation">
-        <p class="post-tag">Foundation Work</p>
-        <h3 class="post-title">Why we chose education as our first focus area</h3>
-        <p class="post-excerpt">Not because it is the most urgent need, but because it is the most multiplying one. A note on how we think about impact.</p>
-        <p class="post-date">March 2026</p>
-      </div>
-      <div class="post-list-item" data-cat="travels">
-        <p class="post-tag">Life & Travels</p>
-        <h3 class="post-title">Portugal in winter — underrated, undervisited, entirely worth it</h3>
-        <p class="post-excerpt">Lisbon in January is a different city. Quieter. The light does something extraordinary to the azulejos.</p>
-        <p class="post-date">February 2026</p>
-      </div>
-      <div class="post-list-item" data-cat="foundation">
-        <p class="post-tag">Foundation Work</p>
-        <h3 class="post-title">What it means to give without expectation</h3>
-        <p class="post-excerpt">A reflection on anonymity, impact, and why we keep the work quiet.</p>
-        <p class="post-date">January 2026</p>
+      <div class="post-list-item" style="grid-column:1/-1;display:flex;align-items:center;justify-content:center;padding:4rem">
+        <p class="post-excerpt" style="text-align:center;color:var(--warm-mid)">Loading posts...</p>
       </div>
     </div>
   </div>
@@ -927,25 +879,116 @@
 </section>
 
 <script>
+  const REPO = 'everwellfoundation/everwellfoundation';
+  const BRANCH = 'main';
+  let allPosts = [];
+  let currentFilter = 'all';
+
   function showPage(id) {
     document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     window.scrollTo(0, 0);
+    if (id === 'journal') renderJournalPosts(currentFilter);
+  }
+
+  function parseFrontmatter(text) {
+    const match = text.match(/^---\n([\s\S]*?)\n---/);
+    if (!match) return { body: text };
+    const fm = {};
+    match[1].split('\n').forEach(line => {
+      const [key, ...rest] = line.split(':');
+      if (key && rest.length) fm[key.trim()] = rest.join(':').trim();
+    });
+    fm.body = text.replace(/^---\n[\s\S]*?\n---\n?/, '').trim();
+    return fm;
+  }
+
+  function formatDate(dateStr) {
+    if (!dateStr) return '';
+    const d = new Date(dateStr);
+    return d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  }
+
+  async function fetchPosts() {
+    try {
+      const cats = ['travels', 'foundation'];
+      const posts = [];
+      for (const cat of cats) {
+        try {
+          const res = await fetch(`https://api.github.com/repos/${REPO}/contents/_posts/${cat}?ref=${BRANCH}`);
+          if (!res.ok) continue;
+          const files = await res.json();
+          for (const file of files) {
+            try {
+              const r = await fetch(file.download_url);
+              const text = await r.text();
+              const fm = parseFrontmatter(text);
+              posts.push({ ...fm, category: cat, slug: file.name });
+            } catch(e) {}
+          }
+        } catch(e) {}
+      }
+      posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+      allPosts = posts;
+      renderHomePosts();
+      renderJournalPosts(currentFilter);
+    } catch(e) {
+      console.error('Error fetching posts:', e);
+    }
+  }
+
+  function renderHomePosts() {
+    const grid = document.getElementById('home-posts-grid');
+    if (!grid) return;
+    if (allPosts.length === 0) {
+      grid.innerHTML = '<div class="post-card featured" style="display:flex;align-items:center;justify-content:center"><p class="post-excerpt" style="text-align:center;color:var(--warm-mid)">No posts yet — check back soon.</p></div>';
+      return;
+    }
+    const featured = allPosts[0];
+    const rest = allPosts.slice(1, 3);
+    let html = `<div class="post-card featured" onclick="showPage('journal')">
+      <p class="post-tag">${featured.category === 'travels' ? 'Life & Travels' : 'Foundation Work'}</p>
+      <h3 class="post-title">${featured.title || ''}</h3>
+      <p class="post-excerpt">${featured.excerpt || ''}</p>
+      <p class="post-date">${formatDate(featured.date)}</p>
+    </div>`;
+    rest.forEach(p => {
+      html += `<div class="post-card" onclick="showPage('journal')">
+        <p class="post-tag">${p.category === 'travels' ? 'Life & Travels' : 'Foundation Work'}</p>
+        <h3 class="post-title">${p.title || ''}</h3>
+        <p class="post-excerpt">${p.excerpt || ''}</p>
+        <p class="post-date">${formatDate(p.date)}</p>
+      </div>`;
+    });
+    grid.innerHTML = html;
+  }
+
+  function renderJournalPosts(filter) {
+    const list = document.getElementById('posts-list');
+    if (!list) return;
+    const filtered = filter === 'all' ? allPosts : allPosts.filter(p => p.category === filter);
+    if (filtered.length === 0) {
+      list.innerHTML = '<div class="post-list-item" style="grid-column:1/-1;padding:4rem;text-align:center"><p class="post-excerpt" style="color:var(--warm-mid)">No posts yet — check back soon.</p></div>';
+      return;
+    }
+    list.innerHTML = filtered.map(p => `
+      <div class="post-list-item" data-cat="${p.category}">
+        <p class="post-tag">${p.category === 'travels' ? 'Life & Travels' : 'Foundation Work'}</p>
+        <h3 class="post-title">${p.title || ''}</h3>
+        <p class="post-excerpt">${p.excerpt || ''}</p>
+        <p class="post-date">${formatDate(p.date)}</p>
+      </div>`).join('');
   }
 
   function filterPosts(cat, btn) {
     document.querySelectorAll('.blog-tab').forEach(t => t.classList.remove('active'));
     btn.classList.add('active');
-    document.querySelectorAll('.post-list-item').forEach(p => {
-      if (cat === 'all') {
-        p.style.display = 'block';
-      } else if (cat === 'foundation') {
-        p.style.display = p.dataset.cat === 'foundation' ? 'block' : 'none';
-      } else if (cat === 'travels') {
-        p.style.display = p.dataset.cat === 'travels' ? 'block' : 'none';
-      }
-    });
+    currentFilter = cat;
+    renderJournalPosts(cat);
   }
+
+  // Load posts on startup
+  fetchPosts();
 </script>
 <script>
   if (window.netlifyIdentity) {
