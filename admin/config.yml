@@ -1,0 +1,31 @@
+backend:
+  name: github
+  repo: everwellfoundation/everwellfoundation
+  branch: main
+
+media_folder: "images/uploads"
+
+collections:
+  - name: "foundation"
+    label: "Foundation Work"
+    folder: "_posts/foundation"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime"}
+      - {label: "Category", name: "category", widget: "hidden", default: "foundation"}
+      - {label: "Excerpt", name: "excerpt", widget: "text"}
+      - {label: "Body", name: "body", widget: "markdown"}
+
+  - name: "travels"
+    label: "Life & Travels"
+    folder: "_posts/travels"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime"}
+      - {label: "Category", name: "category", widget: "hidden", default: "travels"}
+      - {label: "Excerpt", name: "excerpt", widget: "text"}
+      - {label: "Body", name: "body", widget: "markdown"}
