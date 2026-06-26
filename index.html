@@ -840,7 +840,7 @@
 </nav>
 
 <!-- HOME -->
-<section id="home">
+<section id="home" class="active">
   <div class="hero">
     <div class="hero-bg"></div>
     <div class="hero-content">
@@ -1065,15 +1065,13 @@
     const hash = window.location.hash.replace('#', '');
     const validPages = ['home', 'about', 'journal', 'contact'];
     const startPage = validPages.includes(hash) ? hash : 'home';
-    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-    const el = document.getElementById(startPage);
-    if (el) {
-      if (startPage === 'post') {
-        el.style.display = 'flex';
-      }
-      el.classList.add('active');
+    // Only override if not home (home is already active by default)
+    if (startPage !== 'home') {
+      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+      const el = document.getElementById(startPage);
+      if (el) el.classList.add('active');
+      if (startPage === 'journal') renderJournalPosts(currentFilter);
     }
-    if (startPage === 'journal') renderJournalPosts(currentFilter);
     history.replaceState({ page: startPage }, '', '#' + startPage);
   })();
 
