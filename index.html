@@ -1137,7 +1137,14 @@
       if (para.startsWith('<h') || para.startsWith('<blockquote') || para.startsWith('<img')) return para;
       return `<p>${para.replace(/\n/g, ' ')}</p>`;
     }).join('');
-    const authorLine = p.author ? `<span style="font-family:'MeghanJr',cursive;font-size:1.3rem;color:var(--earth);margin-top:0.2rem">&mdash; ${p.author}</span>` : '';
+    let authorLine = '';
+    if (p.author === 'S' || p.author === 's') {
+      authorLine = `
+        <span style="font-family:'MeghanJr',cursive;font-size:1rem;color:var(--earth);margin-top:0.2rem">and with love</span>
+        <span style="font-family:'MeghanJr',cursive;font-size:1.3rem;color:var(--earth);margin-top:0.1rem">&mdash; S</span>`;
+    } else if (p.author) {
+      authorLine = `<span style="font-family:'MeghanJr',cursive;font-size:1.3rem;color:var(--earth);margin-top:0.2rem">&mdash; ${p.author}</span>`;
+    }
     body += `<div class="post-signoff">
       <span style="font-family:'MeghanJr',cursive;font-size:1rem;color:#d4c49a">as ever,</span>
       ${authorLine}
