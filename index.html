@@ -677,6 +677,38 @@
     .nav-links { gap: 1.2rem; }
   }
 
+
+  /* WARM SEPIA FILTER — all post images */
+  .post-body img,
+  .post-featured-image img {
+    filter: sepia(35%) saturate(85%) brightness(0.97) contrast(1.02);
+    transition: filter 0.4s ease;
+  }
+
+  .post-body img:hover,
+  .post-featured-image img:hover {
+    filter: sepia(15%) saturate(95%) brightness(1) contrast(1);
+  }
+
+  .post-featured-image {
+    width: 100%;
+    max-height: 520px;
+    overflow: hidden;
+    margin-bottom: 0;
+  }
+
+  .post-featured-image img {
+    width: 100%;
+    height: 520px;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Warm sepia on journal card thumbnails too */
+  .post-card img {
+    filter: sepia(35%) saturate(85%) brightness(0.97) contrast(1.02);
+  }
+
   /* SINGLE POST PAGE */
   #post {
     min-height: 100vh;
@@ -1135,6 +1167,15 @@
     document.getElementById('post-tag').textContent = p.category === 'travels' ? 'Life & Travels' : 'Foundation Work';
     document.getElementById('post-title').textContent = p.title || '';
     document.getElementById('post-date').textContent = formatDate(p.date);
+
+    // Featured image
+    const featuredImg = document.getElementById('post-featured-image');
+    if (p.featured_image) {
+      featuredImg.innerHTML = `<img src="${p.featured_image}" alt="${p.title || ''}">`;
+      featuredImg.style.display = 'block';
+    } else {
+      featuredImg.style.display = 'none';
+    }
     // Convert basic markdown to HTML
     let body = p.body || '';
     body = body.replace(/^### (.+)$/gm, '<h3>$1</h3>');
@@ -1220,6 +1261,7 @@
     <h1 class="post-hero-title" id="post-title"></h1>
     <p class="post-hero-date" id="post-date"></p>
   </div>
+  <div class="post-featured-image" id="post-featured-image" style="display:none"></div>
   <div class="post-body" id="post-body"></div>
   <footer style="background:var(--ink);padding:3rem 4rem;display:flex;align-items:center;justify-content:space-between">
     <span style="font-family:'Cormorant Garamond',serif;font-size:1rem;letter-spacing:0.18em;text-transform:uppercase;color:#e8dcc8">Everwell</span>
