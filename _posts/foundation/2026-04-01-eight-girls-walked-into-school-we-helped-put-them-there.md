@@ -1,6 +1,6 @@
 ---
 title: Eight girls walked into school. We helped put them there.
-date: 2026-04-01T17:20:00.000-04:00
+date: 2026-06-01T17:23:00.000-04:00
 category: foundation
 excerpt: It started with a six-year-old sitting on the kitchen floor of my
   family home in India. She should have been at school. She wasn't. And I
