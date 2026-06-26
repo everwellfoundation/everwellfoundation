@@ -675,6 +675,112 @@
     footer { flex-direction: column; gap: 1rem; text-align: center; padding: 2rem 1.5rem; }
     .nav-links { gap: 1.2rem; }
   }
+
+  /* SINGLE POST PAGE */
+  #post {
+    min-height: 100vh;
+  }
+
+  .post-hero {
+    padding: 8rem 4rem 4rem;
+    background: var(--stone);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .post-back {
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--olive);
+    cursor: pointer;
+    margin-bottom: 2rem;
+    display: inline-block;
+    transition: color 0.2s;
+  }
+
+  .post-back:hover { color: var(--ink); }
+
+  .post-hero-tag {
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--olive);
+    margin-bottom: 1rem;
+  }
+
+  .post-hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 300;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 1rem;
+  }
+
+  .post-hero-date {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--warm-mid);
+  }
+
+  .post-body {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 4rem 4rem 6rem;
+    background: var(--white);
+  }
+
+  .post-body p {
+    font-size: 0.95rem;
+    line-height: 2;
+    color: var(--earth);
+    margin-bottom: 1.5rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+  }
+
+  .post-body h1, .post-body h2, .post-body h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    color: var(--ink);
+    margin: 2rem 0 1rem;
+  }
+
+  .post-body h2 { font-size: 1.8rem; }
+  .post-body h3 { font-size: 1.4rem; }
+
+  .post-body img {
+    width: 100%;
+    height: auto;
+    margin: 2rem 0;
+    display: block;
+  }
+
+  .post-body blockquote {
+    border-left: 2px solid var(--warm-mid);
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.3rem;
+    color: var(--earth);
+  }
+
+  .post-signoff {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 0.5px solid var(--sand);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
+  }
+
+  @media (max-width: 768px) {
+    .post-hero { padding: 7rem 1.5rem 3rem; }
+    .post-body { padding: 3rem 1.5rem 4rem; }
+  }
 </style>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
@@ -946,14 +1052,14 @@
     }
     const featured = allPosts[0];
     const rest = allPosts.slice(1, 3);
-    let html = `<div class="post-card featured" onclick="showPage('journal')">
+    let html = `<div class="post-card featured" onclick="openPost(0)" style="cursor:pointer">
       <p class="post-tag">${featured.category === 'travels' ? 'Life & Travels' : 'Foundation Work'}</p>
       <h3 class="post-title">${featured.title || ''}</h3>
       <p class="post-excerpt">${featured.excerpt || ''}</p>
       <p class="post-date">${formatDate(featured.date)}</p>
     </div>`;
     rest.forEach(p => {
-      html += `<div class="post-card" onclick="showPage('journal')">
+      html += `<div class="post-card" onclick="openPost(${allPosts.indexOf(p)})" style="cursor:pointer">
         <p class="post-tag">${p.category === 'travels' ? 'Life & Travels' : 'Foundation Work'}</p>
         <h3 class="post-title">${p.title || ''}</h3>
         <p class="post-excerpt">${p.excerpt || ''}</p>
@@ -971,13 +1077,48 @@
       list.innerHTML = '<div class="post-list-item" style="grid-column:1/-1;padding:4rem;text-align:center"><p class="post-excerpt" style="color:var(--warm-mid)">No posts yet — check back soon.</p></div>';
       return;
     }
-    list.innerHTML = filtered.map(p => `
-      <div class="post-list-item" data-cat="${p.category}">
+    list.innerHTML = filtered.map((p, i) => `
+      <div class="post-list-item" data-cat="${p.category}" onclick="openPost(${allPosts.indexOf(p)})" style="cursor:pointer">
         <p class="post-tag">${p.category === 'travels' ? 'Life & Travels' : 'Foundation Work'}</p>
         <h3 class="post-title">${p.title || ''}</h3>
         <p class="post-excerpt">${p.excerpt || ''}</p>
         <p class="post-date">${formatDate(p.date)}</p>
       </div>`).join('');
+  }
+
+  function openPost(index) {
+    const p = allPosts[index];
+    if (!p) return;
+    document.getElementById('post-tag').textContent = p.category === 'travels' ? 'Life & Travels' : 'Foundation Work';
+    document.getElementById('post-title').textContent = p.title || '';
+    document.getElementById('post-date').textContent = formatDate(p.date);
+    // Convert basic markdown to HTML
+    let body = p.body || '';
+    body = body.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+    body = body.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+    body = body.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+    body = body.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    body = body.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    body = body.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
+    body = body.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
+    body = body.split(/\n\n+/).map(para => {
+      if (para.startsWith('<h') || para.startsWith('<blockquote') || para.startsWith('<img')) return para;
+      return `<p>${para.replace(/\n/g, ' ')}</p>`;
+    }).join('');
+    body += `<div class="post-signoff">
+      <span style="font-family:'MeghanJr',cursive;font-size:1rem;color:#d4c49a">as ever,</span>
+      <span style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--earth)">— A & S</span>
+    </div>`;
+    document.getElementById('post-body').innerHTML = body;
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById('post').classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function goBackToJournal() {
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById('journal').classList.add('active');
+    window.scrollTo(0, 0);
   }
 
   function filterPosts(cat, btn) {
@@ -1001,5 +1142,21 @@
     });
   }
 </script>
+
+<!-- SINGLE POST -->
+<section id="post">
+  <div class="post-hero">
+    <span class="post-back" onclick="goBackToJournal()">← Back to journal</span>
+    <p class="post-hero-tag" id="post-tag"></p>
+    <h1 class="post-hero-title" id="post-title"></h1>
+    <p class="post-hero-date" id="post-date"></p>
+  </div>
+  <div class="post-body" id="post-body"></div>
+  <footer style="background:var(--ink);padding:3rem 4rem;display:flex;align-items:center;justify-content:space-between">
+    <span style="font-family:'Cormorant Garamond',serif;font-size:1rem;letter-spacing:0.18em;text-transform:uppercase;color:#e8dcc8">Everwell</span>
+    <span style="font-family:'MeghanJr',cursive;font-size:0.95rem;color:#d4c49a">as ever,</span>
+    <span style="font-size:0.6rem;letter-spacing:0.1em;color:#8b7355">© 2026 Everwell Foundation</span>
+  </footer>
+</section>
 </body>
 </html>
