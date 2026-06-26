@@ -2,6 +2,7 @@
 title: Milo and the surgery that gave him everything back
 date: 2026-05-01T17:21:00.000-04:00
 category: foundation
+author: S
 excerpt: He was a golden retriever with a tumour and a tail that wouldn't stop
   wagging. We didn't know Milo. But we knew his story deserved a different
   ending.
