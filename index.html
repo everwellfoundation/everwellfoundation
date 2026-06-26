@@ -200,10 +200,8 @@
   .btn-secondary:hover { border-color: var(--earth); color: var(--ink); }
 
   .hero-scroll {
-    position: absolute;
-    bottom: 1rem;
-    left: 50%;
-    transform: translateX(-50%);
+    position: relative;
+    margin-top: 3rem;
     font-size: 0.6rem;
     letter-spacing: 0.25em;
     text-transform: uppercase;
@@ -212,6 +210,7 @@
     flex-direction: column;
     align-items: center;
     gap: 0.6rem;
+    z-index: 2;
   }
 
   .hero-scroll-line {
@@ -853,10 +852,10 @@
         <button class="btn btn-primary" onclick="showPage('about')">Our story</button>
         <button class="btn btn-secondary" onclick="showPage('journal')">The journal</button>
       </div>
-    </div>
-    <div class="hero-scroll">
-      <span>Scroll</span>
-      <div class="hero-scroll-line" style="width:0.5px;height:40px;background:linear-gradient(to bottom,var(--warm-mid),transparent);animation:scrollline 2s ease-in-out infinite"></div>
+      <div class="hero-scroll">
+        <span>Scroll</span>
+        <div class="hero-scroll-line"></div>
+      </div>
     </div>
   </div>
 
@@ -1054,18 +1053,20 @@
   // Handle browser back button
   window.addEventListener('popstate', function(e) {
     const page = e.state ? e.state.page : 'home';
+    const validPages = ['home', 'about', 'journal', 'contact'];
+    const targetPage = validPages.includes(page) ? page : 'journal';
     document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-    document.getElementById(page).classList.add('active');
+    document.getElementById(targetPage).classList.add('active');
     window.scrollTo(0, 0);
-    if (page === 'journal') renderJournalPosts(currentFilter);
+    if (targetPage === 'journal') renderJournalPosts(currentFilter);
   });
 
   // On load, check URL hash and show correct page
   (function() {
     const hash = window.location.hash.replace('#', '');
     const validPages = ['home', 'about', 'journal', 'contact'];
+    // Post page can't be restored on reload (no post data) so send to journal
     const startPage = validPages.includes(hash) ? hash : 'home';
-    // Only override if not home (home is already active by default)
     if (startPage !== 'home') {
       document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
       const el = document.getElementById(startPage);
