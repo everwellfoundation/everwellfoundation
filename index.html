@@ -889,7 +889,7 @@
       <p>The foundation is our attempt at that. A structure for giving that is thoughtful rather than impulsive, sustained rather than occasional. We do not seek recognition. We seek impact — small, real, and lasting.</p>
       <p>The journal is the rest of it. The travels, the meals, the mornings that moved us, the books that changed how we thought about something. A life being lived alongside the work, not in spite of it.</p>
       <p class="handwritten" style="font-size:1rem;margin-top:2rem;color:#d4c49a">as ever,</p>
-      <p class="handwritten" style="font-size:1.5rem;margin-top:0.3rem;color:var(--earth)">&mdash; A &amp; S</p>
+      <p class="handwritten" style="font-size:1.5rem;margin-top:0.3rem;color:var(--earth)">&mdash; S &amp; A</p>
     </div>
     <div class="about-aside">
       <div class="aside-item">
@@ -902,7 +902,7 @@
       </div>
       <div class="aside-item">
         <p class="aside-label">Based</p>
-        <p class="aside-value">Canada & United Kingdom</p>
+        <p class="aside-value">Canada</p>
       </div>
       <div class="aside-item">
         <p class="aside-label">Contact</p>
@@ -971,25 +971,33 @@
     <div class="contact-right">
       <p class="about-label">Send a message</p>
       <br><br>
-      <div class="form-group">
-        <label class="form-label">Your name</label>
-        <input type="text" class="form-input" placeholder="How should we address you?">
+      <div id="form-success" style="display:none;padding:2rem;background:var(--stone);border-left:2px solid var(--warm-mid)">
+        <p style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--deep)">Thank you — we read everything.</p>
+        <p class="handwritten" style="font-size:1rem;color:#d4c49a;margin-top:0.5rem">as ever,</p>
       </div>
-      <div class="form-group">
-        <label class="form-label">Email address</label>
-        <input type="email" class="form-input" placeholder="Where can we reach you?">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Subject</label>
-        <input type="text" class="form-input" placeholder="Foundation work, the journal, or something else?">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Message</label>
-        <textarea class="form-textarea" placeholder="We read everything."></textarea>
-      </div>
-      <div class="form-submit">
-        <button class="btn btn-primary">Send message</button>
-      </div>
+      <form id="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="handleSubmit(event)">
+        <input type="hidden" name="form-name" value="contact">
+        <p style="display:none"><input name="bot-field"></p>
+        <div class="form-group">
+          <label class="form-label">Your name</label>
+          <input type="text" name="name" class="form-input" placeholder="How should we address you?" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email address</label>
+          <input type="email" name="email" class="form-input" placeholder="Where can we reach you?" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Subject</label>
+          <input type="text" name="subject" class="form-input" placeholder="Foundation work, the journal, or something else?">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea name="message" class="form-textarea" placeholder="We read everything." required></textarea>
+        </div>
+        <div class="form-submit">
+          <button type="submit" class="btn btn-primary">Send message</button>
+        </div>
+      </form>
     </div>
   </div>
 </section>
@@ -1136,6 +1144,24 @@
     btn.classList.add('active');
     currentFilter = cat;
     renderJournalPosts(cat);
+  }
+
+  // Handle contact form submission
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const form = document.getElementById('contact-form');
+    const data = new FormData(form);
+    try {
+      await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(data).toString()
+      });
+      form.style.display = 'none';
+      document.getElementById('form-success').style.display = 'block';
+    } catch(err) {
+      alert('Something went wrong — please try again.');
+    }
   }
 
   // Load posts on startup
