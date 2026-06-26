@@ -1026,8 +1026,16 @@
     if (page === 'journal') renderJournalPosts(currentFilter);
   });
 
-  // Set initial state
-  history.replaceState({ page: 'home' }, '', '#home');
+  // On load, check URL hash and show correct page
+  (function() {
+    const hash = window.location.hash.replace('#', '');
+    const validPages = ['home', 'about', 'journal', 'contact'];
+    const startPage = validPages.includes(hash) ? hash : 'home';
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(startPage).classList.add('active');
+    if (startPage === 'journal') renderJournalPosts(currentFilter);
+    history.replaceState({ page: startPage }, '', '#' + startPage);
+  })();
 
   function parseFrontmatter(text) {
     const match = text.match(/^---\n([\s\S]*?)\n---/);
@@ -1149,6 +1157,7 @@
       <span style="font-family:'MeghanJr',cursive;font-size:1rem;color:#d4c49a">as ever,</span>
       ${authorLine}
     </div>`;
+    // Always show signoff regardless of author field
     document.getElementById('post-body').innerHTML = body;
     document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
     document.getElementById('post').classList.add('active');
