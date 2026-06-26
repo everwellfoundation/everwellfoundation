@@ -922,7 +922,7 @@
       <p>The journal is the rest of it. The travels, the meals, the mornings that moved us, the books that changed how we thought about something. A life being lived alongside the work, not in spite of it.</p>
       <div style="margin-top:2rem;display:flex;flex-direction:column;gap:0.2rem">
         <p class="handwritten" style="font-size:1rem;color:#d4c49a;line-height:1">as ever,</p>
-        <p class="handwritten" style="font-size:1.3rem;color:#d4c49a;line-height:1">&#8212; the founders</p>
+        <p class="handwritten" style="font-size:1.3rem;color:var(--earth);line-height:1">- the Founders</p>
       </div>
     </div>
     <div class="about-aside">
@@ -1067,7 +1067,12 @@
     const startPage = validPages.includes(hash) ? hash : 'home';
     document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
     const el = document.getElementById(startPage);
-    if (el) el.classList.add('active');
+    if (el) {
+      if (startPage === 'post') {
+        el.style.display = 'flex';
+      }
+      el.classList.add('active');
+    }
     if (startPage === 'journal') renderJournalPosts(currentFilter);
     history.replaceState({ page: startPage }, '', '#' + startPage);
   })();
@@ -1189,17 +1194,21 @@
       if (para.startsWith('<h') || para.startsWith('<blockquote') || para.startsWith('<img')) return para;
       return `<p>${para.replace(/\n/g, ' ')}</p>`;
     }).join('');
-    let authorLine = '';
-    if (p.author === 'S') {
-      authorLine = `
-        <span style="font-family:'MeghanJr',cursive;font-size:1rem;color:var(--earth);margin-top:0.2rem">and with love</span>
-        <span style="font-family:'MeghanJr',cursive;font-size:1.3rem;color:var(--earth);margin-top:0.1rem">&mdash; S</span>`;
-    } else if (p.author === 'A1' || p.author === 'A2' || p.author === 'A') {
-      authorLine = `<span style="font-family:'MeghanJr',cursive;font-size:1.3rem;color:var(--earth);margin-top:0.2rem">&mdash; A</span>`;
+    let greetingLine = '';
+    let initialLine = '';
+
+    if (p.greeting && p.greeting !== 'blank') {
+      greetingLine = `<span style="font-family:'MeghanJr',cursive;font-size:1rem;color:var(--earth);line-height:1">${p.greeting}</span>`;
     }
+
+    if (p.initial) {
+      initialLine = `<span style="font-family:'MeghanJr',cursive;font-size:1.3rem;color:var(--earth);line-height:1">- ${p.initial}</span>`;
+    }
+
     body += `<div class="post-signoff" style="display:flex;flex-direction:column;gap:0.3rem;margin-top:4rem;padding-top:2rem;border-top:0.5px solid var(--sand)">
       <span style="font-family:'MeghanJr',cursive;font-size:1rem;color:#d4c49a;line-height:1">as ever,</span>
-      ${authorLine}
+      ${greetingLine}
+      ${initialLine}
     </div>`;
     document.getElementById('post-body').innerHTML = body;
     document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
