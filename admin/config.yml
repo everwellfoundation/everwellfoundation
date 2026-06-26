@@ -22,6 +22,7 @@ collections:
           - {label: "S", value: "S"}
           - {label: "A (first)", value: "A1"}
           - {label: "A (second)", value: "A2"}
+      - {label: "Featured Image", name: "featured_image", widget: "image", required: false, hint: "Main cover image shown at the top of the post"}
       - {label: "Excerpt", name: "excerpt", widget: "text"}
       - {label: "Body", name: "body", widget: "markdown"}
 
@@ -41,5 +42,6 @@ collections:
           - {label: "S", value: "S"}
           - {label: "A (first)", value: "A1"}
           - {label: "A (second)", value: "A2"}
+      - {label: "Featured Image", name: "featured_image", widget: "image", required: false, hint: "Main cover image shown at the top of the post"}
       - {label: "Excerpt", name: "excerpt", widget: "text"}
       - {label: "Body", name: "body", widget: "markdown"}
