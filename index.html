@@ -528,28 +528,29 @@
   }
 
   .contact-left {
-    background: var(--deep);
+    background: var(--stone);
     padding: 9rem 4rem 4rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    border-right: 0.5px solid var(--sand);
   }
 
   .contact-title {
     font-family: 'Cormorant Garamond', serif;
     font-size: clamp(2.5rem, 4vw, 3.5rem);
     font-weight: 300;
-    color: var(--stone);
+    color: var(--ink);
     line-height: 1.2;
     margin-bottom: 2rem;
   }
 
-  .contact-title em { font-style: italic; color: var(--warm-mid); }
+  .contact-title em { font-style: italic; color: var(--earth); }
 
   .contact-desc {
     font-size: 0.85rem;
     line-height: 1.9;
-    color: var(--warm-mid);
+    color: var(--earth);
     max-width: 380px;
     margin-bottom: 3rem;
   }
@@ -562,14 +563,14 @@
     font-size: 0.58rem;
     letter-spacing: 0.3em;
     text-transform: uppercase;
-    color: var(--olive-light);
+    color: var(--olive);
     margin-bottom: 0.4rem;
   }
 
   .contact-info-value {
     font-family: 'Cormorant Garamond', serif;
     font-size: 1rem;
-    color: var(--sand);
+    color: var(--deep);
   }
 
   .contact-signoff {
@@ -1008,7 +1009,7 @@
   <div class="contact-page">
     <div class="contact-left">
       <div>
-        <p class="about-label" style="color:#c9b89a">Get in touch</p>
+        <p class="about-label" style="color:var(--olive)">Get in touch</p>
         <h1 class="contact-title">We'd love to<br>hear from <em>you.</em></h1>
         <p class="contact-desc">Whether you're interested in our work, want to collaborate, or simply want to share something — we read everything.</p>
         <div class="contact-info-item">
