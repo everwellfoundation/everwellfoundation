@@ -1267,10 +1267,9 @@
     document.getElementById('replyto-field').value = form.querySelector('[name="email"]').value;
     const data = new FormData(form);
     try {
-      const response = await fetch('https://formspree.io/f/mdargyll', {
+      const response = await fetch('/functions/contact', {
         method: 'POST',
-        body: data,
-        headers: { 'Accept': 'application/json' }
+        body: data
       });
       if (response.ok) {
         form.style.display = 'none';
