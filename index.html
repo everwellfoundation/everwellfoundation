@@ -104,7 +104,7 @@
 
   /* HERO */
   .hero {
-    min-height: 85vh;
+    min-height: 75vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -201,7 +201,7 @@
 
   .hero-scroll {
     position: relative;
-    margin-top: 1.5rem;
+    margin-top: 0.75rem;
     font-size: 0.6rem;
     letter-spacing: 0.25em;
     text-transform: uppercase;
@@ -475,7 +475,7 @@
   .blog-tabs {
     display: flex;
     gap: 0;
-    margin-top: 1.5rem;
+    margin-top: 0.75rem;
   }
 
   .blog-tab {
@@ -521,7 +521,7 @@
 
   /* CONTACT PAGE */
   .contact-page {
-    min-height: 85vh;
+    min-height: 75vh;
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
@@ -576,7 +576,7 @@
     font-style: italic;
     font-size: 1.1rem;
     color: var(--warm-mid);
-    margin-top: 1.5rem;
+    margin-top: 0.75rem;
   }
 
   .contact-right {
@@ -710,7 +710,7 @@
 
   /* SINGLE POST PAGE */
   #post {
-    min-height: 85vh;
+    min-height: 75vh;
     flex-direction: column;
   }
 
@@ -828,14 +828,17 @@
 <body>
 
 <nav>
-  <a class="nav-logo" onclick="showPage('home')" style="cursor:pointer;text-decoration:none">Everwell</a>
+  <div onclick="showPage('home')" style="cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;gap:0.1rem;text-decoration:none">
+    <a class="nav-logo" style="text-decoration:none">Everwell</a>
+    <span style="font-family:'MeghanJr',cursive;font-size:0.75rem;color:#d4c49a;letter-spacing:0.05em;line-height:1">as ever</span>
+  </div>
   <ul class="nav-links">
     <li><a onclick="showPage('home')" style="cursor:pointer">Home</a></li>
     <li><a onclick="showPage('about')" style="cursor:pointer">About</a></li>
     <li><a onclick="showPage('journal')" style="cursor:pointer">Journal</a></li>
     <li><a onclick="showPage('contact')" style="cursor:pointer">Contact</a></li>
   </ul>
-  <span class="nav-signoff" style="font-family:'MeghanJr',cursive;font-size:0.95rem;color:#d4c49a;letter-spacing:0.05em">as ever</span>
+  <img src="/images/ef_champagne.png" alt="ef" style="height:42px;opacity:0.75;object-fit:contain;overflow:visible">
 </nav>
 
 <!-- HOME -->
@@ -898,8 +901,11 @@
   </div>
 
   <footer>
-    <span class="footer-logo">Everwell</span>
-    <span class="footer-signoff" style="font-family:'MeghanJr',cursive;font-size:0.95rem;color:#d4c49a">as ever,</span>
+    <div style="display:flex;flex-direction:column;align-items:flex-start;gap:0.1rem">
+      <span class="footer-logo">Everwell</span>
+      <span style="font-family:'MeghanJr',cursive;font-size:0.75rem;color:#d4c49a;letter-spacing:0.05em;line-height:1">as ever</span>
+    </div>
+    <img src="/images/ef_champagne.png" alt="ef" style="height:52px;opacity:0.55;object-fit:contain;filter:brightness(1.4)">
     <span class="footer-copy">© 2026 Everwell Foundation</span>
   </footer>
 </section>
@@ -949,8 +955,11 @@
   </div>
 
   <footer>
-    <span class="footer-logo">Everwell</span>
-    <span class="footer-signoff" style="font-family:'MeghanJr',cursive;font-size:0.95rem;color:#d4c49a">as ever,</span>
+    <div style="display:flex;flex-direction:column;align-items:flex-start;gap:0.1rem">
+      <span class="footer-logo">Everwell</span>
+      <span style="font-family:'MeghanJr',cursive;font-size:0.75rem;color:#d4c49a;letter-spacing:0.05em;line-height:1">as ever</span>
+    </div>
+    <img src="/images/ef_champagne.png" alt="ef" style="height:52px;opacity:0.55;object-fit:contain;filter:brightness(1.4)">
     <span class="footer-copy">© 2026 Everwell Foundation</span>
   </footer>
 </section>
@@ -976,8 +985,11 @@
   </div>
 
   <footer>
-    <span class="footer-logo">Everwell</span>
-    <span class="footer-signoff" style="font-family:'MeghanJr',cursive;font-size:0.95rem;color:#d4c49a">as ever,</span>
+    <div style="display:flex;flex-direction:column;align-items:flex-start;gap:0.1rem">
+      <span class="footer-logo">Everwell</span>
+      <span style="font-family:'MeghanJr',cursive;font-size:0.75rem;color:#d4c49a;letter-spacing:0.05em;line-height:1">as ever</span>
+    </div>
+    <img src="/images/ef_champagne.png" alt="ef" style="height:52px;opacity:0.55;object-fit:contain;filter:brightness(1.4)">
     <span class="footer-copy">© 2026 Everwell Foundation</span>
   </footer>
 </section>
