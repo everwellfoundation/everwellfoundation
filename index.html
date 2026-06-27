@@ -1028,7 +1028,7 @@
         <p style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--deep)">Thank you — we read everything.</p>
         <p class="handwritten" style="font-size:1rem;color:#d4c49a;margin-top:0.5rem">as ever,</p>
       </div>
-      <form id="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="handleSubmit(event)">
+      <form id="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/contact-success" onsubmit="handleSubmit(event)">
         <input type="hidden" name="form-name" value="contact">
         <p style="display:none"><input name="bot-field"></p>
         <div class="form-group">
@@ -1053,6 +1053,14 @@
       </form>
     </div>
   </div>
+  <footer>
+    <div style="display:flex;flex-direction:column;align-items:flex-start;gap:0.1rem">
+      <span class="footer-logo">Everwell</span>
+      <span style="font-family:'MeghanJr',cursive;font-size:0.75rem;color:#d4c49a;letter-spacing:0.05em;line-height:1">as ever</span>
+    </div>
+    <img src="/images/ef_champagne.png" alt="ef" style="height:80px;opacity:1;object-fit:contain;filter:brightness(1.8) contrast(1.4)">
+    <span class="footer-copy">© 2026 Everwell Foundation</span>
+  </footer>
 </section>
 
 <script>
